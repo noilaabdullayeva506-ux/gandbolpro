@@ -33,6 +33,10 @@
       <div class="nav-section" style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--text3); padding:10px 8px 4px; font-weight:600;">Diagnostika</div>
       <a class="nav-item {{ 'active' if active=='tests' else '' }}" href="{{ url_for('coach_tests') }}">🔬 Testlar</a>
       <a class="nav-item {{ 'active' if active=='results' else '' }}" href="{{ url_for('coach_results') }}">📝 Natijalar</a>
+
+      <div class="nav-section" style="font-size:10px; text-transform:uppercase; letter-spacing:1px; color:var(--text3); padding:10px 8px 4px; font-weight:600;">Tahlil</div>
+      <a class="nav-item {{ 'active' if active=='stats' else '' }}" href="{{ url_for('coach_stats') }}">📈 Grafik &amp; Statistika</a>
+      <a class="nav-item {{ 'active' if active=='science' else '' }}" href="{{ url_for('coach_science') }}">🎓 Ilmiy asos</a>
     </div>
 
     <div class="sidebar-bottom">
