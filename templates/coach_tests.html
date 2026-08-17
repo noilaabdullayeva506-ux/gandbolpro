@@ -4,98 +4,154 @@
 <div class="page-header">
   <div>
     <div class="page-title">Testlar va Diagnostika</div>
-    <div class="page-sub">Natijalar joriy bosqichga ({{ 'Pretest' if phase=='pretest' else 'Posttest' }}) yoziladi</div>
+    <div class="page-sub">Natijalar joriy bosqichga (<strong style="color:var(--accent);">{{ 'Pretest' if phase=='pretest' else 'Posttest' }}</strong>) yoziladi</div>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-title">🟢 Yo-Yo IR1</div>
+<!-- YO-YO IR1 -->
+<div class="card" style="margin-bottom: 16px;">
+  <div class="card-title">🟢 Yo-Yo IR1 — Intermittent Recovery Test</div>
   <form method="POST">
     <input type="hidden" name="test" value="yoyo">
-    <div class="form-row">
-      <div class="input-group"><label>O'yinchi</label>
-        <select name="player_id" required>
+    <div class="form-row" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px;">
+      <div class="input-group">
+        <label>O'yinchi</label>
+        <select name="player_id" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
           <option value="">— tanlang —</option>
-          {% for p in players %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+          {% for p in players %}
+          <option value="{{ p.id }}">{{ p.name }}</option>
+          {% endfor %}
         </select>
       </div>
-      <div class="input-group"><label>Bosib o'tilgan masofa (m)</label><input type="number" name="dist" placeholder="2200" required></div>
+      <div class="input-group">
+        <label>Bosib o'tilgan masofa (m)</label>
+        <input type="number" name="dist" placeholder="masalan: 2200" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">Hisoblash va saqlash</button>
   </form>
 </div>
 
-<div class="card">
-  <div class="card-title">🔵 Bleep Test</div>
+<!-- BLEEP TEST -->
+<div class="card" style="margin-bottom: 16px;">
+  <div class="card-title">🔵 Bleep Test — Multi-Stage Fitness</div>
   <form method="POST">
     <input type="hidden" name="test" value="bleep">
-    <div class="form-row">
-      <div class="input-group"><label>O'yinchi</label>
-        <select name="player_id" required>
+    <div class="form-row" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px;">
+      <div class="input-group">
+        <label>O'yinchi</label>
+        <select name="player_id" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
           <option value="">— tanlang —</option>
-          {% for p in players %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+          {% for p in players %}
+          <option value="{{ p.id }}">{{ p.name }}</option>
+          {% endfor %}
         </select>
       </div>
-      <div class="input-group"><label>Daraja (Level)</label><input type="number" name="level" min="1" max="21" required></div>
-      <div class="input-group"><label>Yosh</label><input type="number" name="age" placeholder="o'yinchining yoshi"></div>
+      <div class="input-group">
+        <label>Daraja (Level)</label>
+        <input type="number" name="level" min="1" max="21" placeholder="masalan: 12" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
+      <div class="input-group">
+        <label>Yosh</label>
+        <input type="number" name="age" placeholder="o'yinchining yoshi" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">Hisoblash va saqlash</button>
   </form>
 </div>
 
-<div class="card">
-  <div class="card-title">🟠 30-15 IFT</div>
+<!-- 30-15 IFT -->
+<div class="card" style="margin-bottom: 16px;">
+  <div class="card-title">🟠 30-15 Intermittent Fitness Test</div>
   <form method="POST">
     <input type="hidden" name="test" value="ift">
-    <div class="form-row">
-      <div class="input-group"><label>O'yinchi</label>
-        <select name="player_id" required>
+    <div class="form-row" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 12px;">
+      <div class="input-group">
+        <label>O'yinchi</label>
+        <select name="player_id" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
           <option value="">— tanlang —</option>
-          {% for p in players %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+          {% for p in players %}
+          <option value="{{ p.id }}">{{ p.name }}</option>
+          {% endfor %}
         </select>
       </div>
-      <div class="input-group"><label>VIFT (km/soat)</label><input type="number" step="0.5" name="vift" required></div>
-      <div class="input-group"><label>Yosh</label><input type="number" name="age"></div>
-      <div class="input-group"><label>Vazn (kg)</label><input type="number" name="weight"></div>
-      <div class="input-group"><label>Jins</label><select name="gender"><option value="0">Erkak</option><option value="1">Ayol</option></select></div>
+      <div class="input-group">
+        <label>VIFT (km/soat)</label>
+        <input type="number" step="0.5" name="vift" placeholder="18.5" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
+      <div class="input-group">
+        <label>Yosh</label>
+        <input type="number" name="age" placeholder="23" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
+      <div class="input-group">
+        <label>Vazn (kg)</label>
+        <input type="number" name="weight" placeholder="80" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
+      <div class="input-group">
+        <label>Jins</label>
+        <select name="gender" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+          <option value="0">Erkak</option>
+          <option value="1">Ayol</option>
+        </select>
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">Hisoblash va saqlash</button>
   </form>
 </div>
 
-<div class="card">
-  <div class="card-title">🟣 HGBPT</div>
+<!-- HGBPT -->
+<div class="card" style="margin-bottom: 16px;">
+  <div class="card-title">🟣 HGBPT — Handball Game Based Performance Test</div>
   <form method="POST">
     <input type="hidden" name="test" value="hgbpt">
-    <div class="form-row">
-      <div class="input-group"><label>O'yinchi</label>
-        <select name="player_id" required>
+    <div class="form-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px;">
+      <div class="input-group">
+        <label>O'yinchi</label>
+        <select name="player_id" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
           <option value="">— tanlang —</option>
-          {% for p in players %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+          {% for p in players %}
+          <option value="{{ p.id }}">{{ p.name }}</option>
+          {% endfor %}
         </select>
       </div>
       {% for i in range(1,7) %}
-      <div class="input-group"><label>Sikl {{ i }} (sek)</label><input type="number" step="0.1" name="t{{ i }}" required></div>
+      <div class="input-group">
+        <label>Sikl {{ i }} (sek)</label>
+        <input type="number" step="0.1" name="t{{ i }}" placeholder="18.5" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
       {% endfor %}
-      <div class="input-group"><label>Muvaffaqiyatli otishlar</label><input type="number" name="hits" min="0" max="6"></div>
-      <div class="input-group"><label>Jami otishlar</label><input type="number" name="total" value="6"></div>
+      <div class="input-group">
+        <label>Muvaffaqiyatli otishlar</label>
+        <input type="number" name="hits" min="0" max="6" placeholder="5" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
+      <div class="input-group">
+        <label>Jami otishlar</label>
+        <input type="number" name="total" value="6" style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">Hisoblash va saqlash</button>
   </form>
 </div>
 
-<div class="card">
-  <div class="card-title">🟡 Borg RPE</div>
+<!-- Borg RPE -->
+<div class="card" style="margin-bottom: 16px;">
+  <div class="card-title">🟡 Borg RPE Shkalasi</div>
   <form method="POST">
     <input type="hidden" name="test" value="rpe">
-    <div class="form-row">
-      <div class="input-group"><label>O'yinchi</label>
-        <select name="player_id" required>
+    <div class="form-row" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px;">
+      <div class="input-group">
+        <label>O'yinchi</label>
+        <select name="player_id" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
           <option value="">— tanlang —</option>
-          {% for p in players %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+          {% for p in players %}
+          <option value="{{ p.id }}">{{ p.name }}</option>
+          {% endfor %}
         </select>
       </div>
-      <div class="input-group"><label>RPE bali (6–20)</label><input type="number" name="rpe" min="6" max="20" required></div>
+      <div class="input-group">
+        <label>RPE bali (6–20)</label>
+        <input type="number" name="rpe" min="6" max="20" placeholder="14" required style="width:100%; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); font-size:13px; outline:none;">
+      </div>
     </div>
     <button class="btn btn-primary" type="submit">Baholash va saqlash</button>
   </form>
