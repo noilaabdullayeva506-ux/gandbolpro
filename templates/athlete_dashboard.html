@@ -5,6 +5,259 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sportchi kabineti — GandbolPro</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #2a3441;
+    --accent: #e8631a;
+    --accent2: #f0872e;
+    --accent-dim: rgba(232,99,26,0.12);
+    --green: #2ea043;
+    --green-dim: rgba(46,160,67,0.15);
+    --blue: #388bfd;
+    --blue-dim: rgba(56,139,253,0.12);
+    --yellow: #d29922;
+    --yellow-dim: rgba(210,153,34,0.15);
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
+  }
+
+  .sp-shell {
+    width: 100%;
+    max-width: 460px;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  .sp-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+  }
+
+  .sp-brand-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .sp-brand-sub {
+    font-size: 9.5px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .sp-btn-ghost {
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text2);
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 13px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.15s;
+  }
+
+  .sp-btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .sp-empty {
+    text-align: center;
+    padding: 44px 20px;
+    background: var(--surface);
+    border-radius: 14px;
+    border: 1px dashed var(--border);
+    margin: 20px;
+  }
+
+  .sp-profile-hero {
+    background: linear-gradient(160deg, var(--surface2) 0%, var(--bg) 100%);
+    padding: 14px 20px 26px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sp-profile-id {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .sp-profile-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: #fff;
+    background: var(--accent);
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .sp-profile-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--text);
+  }
+
+  .sp-profile-meta {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 3px;
+  }
+
+  .sp-badge-group {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .sp-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 0 16px;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sp-stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 6px;
+    text-align: center;
+  }
+
+  .sp-stat-val {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .sp-stat-label {
+    font-size: 9.5px;
+    color: var(--text3);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .sp-section {
+    padding: 24px 20px 0;
+  }
+
+  .sp-section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .sp-result-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+
+  .sp-result-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    background: var(--accent-dim);
+  }
+
+  .sp-result-test {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .sp-result-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  .sp-result-note {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  .sp-tip {
+    margin: 26px 20px 0;
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
 </head>
 <body>
 <div class="sp-shell">
@@ -14,8 +267,8 @@
       <div class="sp-brand-sub">Sportchi kabineti</div>
     </div>
     <div style="display:flex; gap:8px;">
-      <a href="{{ url_for('athlete_dashboard') }}" class="btn btn-outline" style="padding:6px 12px; font-size:12px;">⟳ Yangilash</a>
-      <a href="{{ url_for('logout') }}" class="btn btn-outline" style="padding:6px 12px; font-size:12px;">Chiqish</a>
+      <a href="{{ url_for('athlete_dashboard') }}" class="sp-btn-ghost">⟳ Yangilash</a>
+      <a href="{{ url_for('logout') }}" class="sp-btn-ghost">Chiqish</a>
     </div>
   </div>
 
@@ -28,7 +281,9 @@
   {% else %}
   <div class="sp-profile-hero">
     <div class="sp-profile-id">
-      <div class="sp-profile-avatar">{{ player.name.split(' ')[0][0]|upper }}{{ (player.name.split(' ')[1][0]|upper) if player.name.split(' ')|length > 1 else '' }}</div>
+      <div class="sp-profile-avatar">
+        {{ player.name.split(' ')[0][0]|upper }}{{ (player.name.split(' ')[1][0]|upper) if player.name.split(' ')|length > 1 else '' }}
+      </div>
       <div>
         <div class="sp-profile-name">{{ player.name }}</div>
         <div class="sp-profile-meta">{{ player.position }} · {{ player.age }} yosh</div>
@@ -53,7 +308,7 @@
   </div>
 
   <div class="sp-section">
-    <div class="sp-section-title">So'nggi natijalarim ({{ player.results|length }})</div>
+    <div class="sp-section-title">So'nggi natijalarim <span style="font-family:'Space Mono',monospace; font-size:10.5px; font-weight:400; color:var(--text3); background:var(--surface2); padding:1px 7px; border-radius:999px;">{{ player.results|length }}</span></div>
     {% if player.results %}
       {% for r in player.results %}
       <div class="sp-result-card">
@@ -66,13 +321,14 @@
       </div>
       {% endfor %}
     {% else %}
-      <div class="sp-empty">
+      <div class="sp-empty" style="margin: 0; padding: 30px 20px;">
         <div style="font-size:26px; margin-bottom:6px;">📋</div>
         <div style="font-weight:600; font-size:13px;">Hali test natijalaringiz yo'q</div>
         <div style="font-size:11.5px; color:var(--text3); margin-top:4px;">Murabbiyingiz keyingi test o'tkazganda, natijangiz shu yerda ko'rinadi.</div>
       </div>
     {% endif %}
   </div>
+  <div class="sp-tip">Yangi natija qo'shilganda "Yangilash" tugmasini bosing.</div>
   {% endif %}
 </div>
 </body>
