@@ -5,6 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kirish — GandbolPro</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2330;
+    --border: #2a3441;
+    --accent: #e8631a;
+    --accent2: #f0872e;
+    --accent-dim: rgba(232,99,26,0.12);
+    --green: #2ea043;
+    --green-dim: rgba(46,160,67,0.15);
+    --blue: #388bfd;
+    --blue-dim: rgba(56,139,253,0.12);
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-wrap {
+    width: 100%;
+    max-width: 380px;
+    padding: 20px;
+  }
+
+  .login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .login-logo {
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .login-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+
+  .login-sub {
+    font-size: 12.5px;
+    color: var(--text3);
+    margin-bottom: 22px;
+  }
+
+  .input-group {
+    margin-bottom: 14px;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .input-group input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 13.5px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .input-group input:focus {
+    border-color: var(--accent);
+  }
+
+  .btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent2);
+  }
+
+  .flash {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    margin-bottom: 16px;
+  }
+
+  .flash-error, .flash-danger {
+    background: rgba(248, 81, 73, 0.15);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    color: #f85149;
+  }
+
+  .flash-success {
+    background: var(--green-dim);
+    border: 1px solid rgba(46, 160, 67, 0.3);
+    color: var(--green);
+  }
+</style>
 </head>
 <body>
 <div class="login-wrap">
@@ -30,8 +174,9 @@
       </div>
       <button type="submit" class="btn btn-primary" style="width:100%; margin-top:6px;">Kirish</button>
     </form>
-    <div style="margin-top:16px; font-size:11px; color:var(--text3); text-align:center;">
-      Murabbiy: login <b>coach</b> · parol <b>coach123</b> (birinchi kirishdan keyin o'zgartiring)
+    
+    <div style="margin-top:16px; font-size:11px; color:var(--text3); text-align:center; line-height: 1.5;">
+      Murabbiy: login <b>coach</b> · parol <b>coach123</b>
     </div>
   </div>
 </div>
