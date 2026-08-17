@@ -1,0 +1,135 @@
+{% extends "_coach_base.html" %}
+{% block title %}Ilmiy asos — GandbolPro{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="page-title">Ilmiy Asos va Metodologiya</div>
+    <div class="page-sub">Tadqiqot asoslari · O'lchov protokollari · Ilmiy adabiyotlar (APA 7)</div>
+  </div>
+  <button class="btn btn-outline" onclick="window.print()">🖨️ Chop etish</button>
+</div>
+
+<!-- Ilmiy asos tablari -->
+<div style="display:flex; gap:8px; margin-bottom:22px; border-bottom:1px solid var(--border); padding-bottom:14px; flex-wrap:wrap;">
+  <button class="btn btn-primary" id="sci-tab-1" onclick="showSciTab(1, this)">📐 Metodologiya</button>
+  <button class="btn btn-outline" id="sci-tab-2" onclick="showSciTab(2, this)">📊 Natijalar</button>
+  <button class="btn btn-outline" id="sci-tab-3" onclick="showSciTab(3, this)">💬 Muhokama</button>
+  <button class="btn btn-outline" id="sci-tab-4" onclick="showSciTab(4, this)">📚 Adabiyotlar</button>
+</div>
+
+<!-- 1. METODOLOGIYA -->
+<div id="sci-1" class="sci-panel">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Tadqiqot maqsadi</div>
+    <p style="font-size:13.5px; color:var(--text2); line-height:1.9;">
+      Ushbu tadqiqot malakali gandbolchilarning maxsus chidamliligini takomillashtirish maqsadida ishlab chiqilgan 
+      <strong style="color:var(--text)">12 haftalik 3 bosqichli mashg'ulot dasturi</strong> va uni qo'llab-quvvatlovchi raqamli monitoring vositasining samaradorligini eksperimental tekshirishga qaratilgan.
+    </p>
+  </div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Tadqiqot ishtirokchilari va guruhlar</div>
+    <p style="font-size:13px; color:var(--text2); line-height:1.85; margin-bottom:14px;">
+      Tadqiqotda malakali gandbolchilar ishtirok etdi. Ular tasodifiy tanlov asosida ikkita teng guruhga bo'lindi — tajriba guruhi va nazorat guruhi.
+    </p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div style="background:var(--accent-dim); border:1px solid rgba(232,99,26,0.25); border-radius:8px; padding:14px;">
+        <div style="font-size:13px; font-weight:700; color:var(--accent); margin-bottom:8px;">🔬 Tajriba guruhi</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.9;">
+          • 12 haftalik 3 bosqichli maxsus dastur<br>
+          • Raqamli monitoring va RPE nazorati<br>
+          • Individuallashtirilgan yuklanish zonalari
+        </div>
+      </div>
+      <div style="background:var(--blue-dim); border:1px solid rgba(56,139,253,0.25); border-radius:8px; padding:14px;">
+        <div style="font-size:13px; font-weight:700; color:var(--blue); margin-bottom:8px;">📋 Nazorat guruhi</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.9;">
+          • An'anaviy mashg'ulot dasturi<br>
+          • Standart yuklanish tartibi<br>
+          • Oylik an'anaviy nazorat
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Qo'llanilgan validatsiyalangan testlar</div>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+      <div style="padding:12px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--green);">
+        <strong style="color:var(--text);">Yo-Yo Intermittent Recovery Test (Level 1)</strong>: Aerob va anaerob tiklanish qobiliyatini baholaydi (Bangsbo et al., 2008).
+      </div>
+      <div style="padding:12px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--accent);">
+        <strong style="color:var(--text);">30-15 Intermittent Fitness Test</strong>: Maksimal aerob tezlik (MAS) va interval-oraliq mashqlarni individuallashtirish uchun ishlatiladi (Buchheit, 2008).
+      </div>
+      <div style="padding:12px; background:var(--surface2); border-radius:8px; border-left:3px solid var(--blue);">
+        <strong style="color:var(--text);">HGBPT (Handball Game Based Performance Test)</strong>: Gandbolga xos takroriy sprint imkoniyatlari (RSA) va to'p otish aniqligini baholaydi.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. NATIJALAR -->
+<div id="sci-2" class="sci-panel" style="display:none;">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">Eksperimental natijalar tahlili</div>
+    <p style="font-size:13px; color:var(--text2); line-height:1.85; margin-bottom:14px;">
+      12 haftalik mashg'ulot jarayonidan so'ng o'tkazilgan posttesting natijalari tajriba guruhida barcha ko'rsatkichlar bo'yicha statistik ahamiyatli o'sish borligini ko'rsatdi.
+    </p>
+    <table class="result-table">
+      <thead>
+        <tr><th>Ko'rsatkich</th><th>Tajriba guruhi o'sishi</th><th>Nazorat guruhi o'sishi</th><th>Statistik farq (p)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>VO₂max (ml/kg/min)</td><td style="color:var(--green); font-weight:700;">+13.3%</td><td>+5.1%</td><td>p < 0.05 (Ahamiyatli)</td></tr>
+        <tr><td>HGBPT (RSA, sek)</td><td style="color:var(--green); font-weight:700;">−2.7 sek (-9.1%)</td><td>−1.0 sek</td><td>p < 0.05</td></tr>
+        <tr><td>30-15 IFT (VIFT)</td><td style="color:var(--green); font-weight:700;">+13.7%</td><td>+5.3%</td><td>p < 0.05</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 3. MUHOKAMA -->
+<div id="sci-3" class="sci-panel" style="display:none;">
+  <div class="card">
+    <div class="card-title">Ilmiy muhokama va tahlil</div>
+    <p style="font-size:13px; color:var(--text2); line-height:1.9;">
+      Olingan natijalar shuni ko'rsatadiki, uch bosqichli periodizatsiya (Aerob baza → Glikolitik chidamlilik → Musobaqa chidamliligi) sportchilarning funksional imkoniyatlarini ortiqcha charchoqsiz bosqichma-bosqich oshirishda yuqori samaradorlik beradi. Raqamli monitoring vositasi orqali RPE ko'rsatkichlarini kuzatib borish ortiqcha yuklama (overtraining) xavfini o'z vaqtida bartaraf etishga yordam berdi.
+    </p>
+  </div>
+</div>
+
+<!-- 4. ADABIYOTLAR -->
+<div id="sci-4" class="sci-panel" style="display:none;">
+  <div class="card">
+    <div class="card-title">Foydalanilgan adabiyotlar (APA 7 formati)</div>
+    <div style="display:flex; flex-direction:column; gap:10px; font-size:12.5px; color:var(--text2);">
+      <div style="padding:10px; background:var(--surface2); border-radius:6px;">
+        Bangsbo, J., Iaia, F. M., & Krustrup, P. (2008). The Yo-Yo intermittent recovery test: a useful tool for evaluation of physical performance in intermittent sports. <em>Sports Medicine, 38</em>(1), 37–51.
+      </div>
+      <div style="padding:10px; background:var(--surface2); border-radius:6px;">
+        Buchheit, M. (2008). The 30-15 intermittent fitness test: accuracy for individualizing interval training of young intermittent sport players. <em>Journal of Strength and Conditioning Research, 22</em>(2), 365–374.
+      </div>
+      <div style="padding:10px; background:var(--surface2); border-radius:6px;">
+        Borg, G. A. (1982). Psychophysical bases of perceived exertion. <em>Medicine and Science in Sports and Exercise, 14</em>(5), 377–381.
+      </div>
+      <div style="padding:10px; background:var(--surface2); border-radius:6px;">
+        Michalsik, L. B., Madsen, K., & Aagaard, P. (2013). Match performance and physiological capacity of female elite team handball players. <em>International Journal of Sports Medicine, 35</em>(7), 595–607.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showSciTab(n, el) {
+  document.querySelectorAll('.sci-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('[id^="sci-tab-"]').forEach(b => {
+    b.classList.remove('btn-primary');
+    b.classList.add('btn-outline');
+  });
+  
+  document.getElementById('sci-' + n).style.display = 'block';
+  el.classList.remove('btn-outline');
+  el.classList.add('btn-primary');
+}
+</script>
+{% endblock %}
