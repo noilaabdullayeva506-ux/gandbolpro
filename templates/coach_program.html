@@ -3,68 +3,91 @@
 {% block content %}
 <div class="page-header">
   <div>
-    <div class="page-title">Mashg'ulot dasturi</div>
-    <div class="page-sub">12 haftalik maxsus chidamlilik dasturi · 3 bosqichli periodizatsiya</div>
+    <div class="page-title">12 Haftalik Mashg'ulot Dasturi</div>
+    <div class="page-sub">Maxsus chidamlilikni takomillashtirish · 3 bosqichli periodizatsiya</div>
   </div>
   <button class="btn btn-outline" onclick="window.print()">🖨️ Chop etish</button>
 </div>
 
-<!-- Haftalar bo'yicha tablar (1 dan 12 gacha) -->
+<!-- Haftalar bo'yicha navigatsiya tablari (1 dan 12 gacha) -->
 <div class="week-tabs" style="display:flex; gap:6px; margin-bottom:20px; overflow-x:auto; padding-bottom:6px;">
   {% for w in weeks %}
-  <button class="week-tab btn {{ 'btn-primary' if loop.first else 'btn-outline' }}" data-week="{{ w.n }}" onclick="gpShowWeek({{ w.n }}, this)" style="white-space:nowrap; font-size:12px; padding:6px 12px;">{{ w.n }}-hafta</button>
+  <button class="week-tab btn {{ 'btn-primary' if loop.first else 'btn-outline' }}" data-week="{{ w.n }}" onclick="gpShowWeek({{ w.n }}, this)" style="white-space:nowrap; font-size:12px; padding:6px 14px;">{{ w.n }}-hafta</button>
   {% endfor %}
 </div>
 
 <!-- Har bir hafta uchun alohida panel -->
 {% for w in weeks %}
 <div class="week-panel" id="week-{{ w.n }}" style="{{ '' if loop.first else 'display:none;' }}">
-  <div class="card" style="margin-bottom:14px;">
-    <div style="display:flex; gap:12px; align-items:flex-start; margin-bottom:16px;">
-      <div style="background:{{ 'var(--green-dim)' if w.stage=='I' else ('var(--accent-dim)' if w.stage=='II' else 'var(--blue-dim)') }}; border-radius:8px; padding:10px 14px; text-align:center; min-width:80px;">
+  <div class="card" style="margin-bottom:14px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px;">
+    
+    <!-- Haftaning sarlavhasi va bosqich belgisi -->
+    <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:16px;">
+      <div style="background:{{ 'var(--green-dim)' if w.stage=='I' else ('var(--accent-dim)' if w.stage=='II' else 'var(--blue-dim)') }}; border-radius:10px; padding:10px 14px; text-align:center; min-width:85px; border:1px solid {{ 'rgba(46,160,67,0.3)' if w.stage=='I' else ('rgba(232,99,26,0.3)' if w.stage=='II' else 'rgba(56,139,253,0.3)') }};">
         <div style="font-size:22px; font-weight:700; color:{{ 'var(--green)' if w.stage=='I' else ('var(--accent)' if w.stage=='II' else 'var(--blue)') }}; font-family:'Space Grotesk',sans-serif;">{{ w.stage }}</div>
-        <div style="font-size:10px; color:var(--text3);">BOSQICH</div>
+        <div style="font-size:9.5px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px;">BOSQICH</div>
       </div>
       <div>
-        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;">{{ w.n }}-HAFTA</div>
-        <div style="font-size:16px; font-weight:600; margin-bottom:4px; color:var(--text);">{{ w.title }}</div>
-        <div style="font-size:12px; color:var(--text3); line-height:1.7;">
-          Maqsad: {{ w.goal }}<br>
-          Intensivlik: <strong>{{ w.intensity }}</strong>
+        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:3px;">{{ w.n }}-HAFTA DASTURI</div>
+        <div style="font-size:18px; font-weight:700; margin-bottom:6px; color:var(--text); font-family:'Space Grotesk',sans-serif;">{{ w.title }}</div>
+        <div style="font-size:12.5px; color:var(--text2); line-height:1.6;">
+          🎯 Maqsad: <span style="color:var(--text);">{{ w.goal }}</span><br>
+          ⚡ Umumiy Intensivlik: <strong style="color:var(--accent);">{{ w.intensity }}</strong>
         </div>
       </div>
     </div>
 
+    <!-- Kunlik mashg'ulotlar jadvali va rasmga o'xshash rangli ko'rsatkichlar -->
     <div class="table-scroll">
-      <table class="result-table">
+      <table class="result-table" style="width:100%; border-collapse:collapse;">
         <thead>
           <tr>
-            <th>Kun</th>
-            <th>Mashq turi</th>
-            <th>Hajm</th>
-            <th>Intensivlik</th>
-            <th>Dam</th>
+            <th style="width: 110px;">KUN</th>
+            <th>MASHQ TURI</th>
+            <th style="width: 110px;">HAJM</th>
+            <th style="width: 150px;">INTENSIVLIK</th>
+            <th style="width: 90px; text-align: right;">DAM</th>
           </tr>
         </thead>
         <tbody>
           {% for day, exercise, volume, intensity, rest in w.days %}
-          <tr>
-            <td><strong>{{ day }}</strong></td>
-            <td>{{ exercise }}</td>
-            <td>{{ volume }}</td>
-            <td>
-              {% if intensity is not none %}
-              <div class="intensity-bar" style="display:flex; align-items:center; gap:6px;">
-                <span class="badge {{ 'badge-green' if w.stage=='I' else ('badge-orange' if w.stage=='II' else 'badge-blue') }}">{{ intensity }}%</span>
-              </div>
-              {% else %}—{% endif %}
+          <tr style="{% if 'Tabata' in exercise or 'HIIT' in exercise or 'Maksimal' in exercise %}background:rgba(137,87,229,0.06); border-left:3px solid #8957e5;{% endif %}">
+            <td style="padding: 12px 10px; font-weight: 600; color: var(--text);">{{ day }}</td>
+            <td style="padding: 12px 10px;">
+              {% if 'Tabata' in exercise %}
+                <span style="color:#8957e5; font-weight:600; margin-right:6px;">↳ Tabata</span>
+              {% endif %}
+              {{ exercise }}
             </td>
-            <td>{{ rest }}</td>
+            <td style="padding: 12px 10px; color: var(--text2);">{{ volume }}</td>
+            <td style="padding: 12px 10px;">
+              {% if intensity is not none %}
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 10px; height: 10px; border-radius: 2px; background: {% if intensity|int >= 90 %}#8957e5{% elif intensity|int >= 80 %}var(--accent){% else %}var(--blue){% endif %};"></div>
+                <span style="font-family:'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text);">{{ intensity }}%</span>
+              </div>
+              {% else %}
+              <span style="color: var(--text3);">—</span>
+              {% endif %}
+            </td>
+            <td style="padding: 12px 10px; text-align: right; color: var(--text2); font-family:'Space Mono', monospace; font-size: 12px;">{{ rest }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
+    {% if w.stage == 'II' %}
+    <!-- II Bosqich uchun maxsus Tabata eslatma kartochkasi -->
+    <div style="margin-top:16px; padding:14px; background:rgba(137,87,229,0.08); border-radius:8px; border:1px solid rgba(137,87,229,0.3);">
+      <div style="font-size:12px; font-weight:700; color:#8957e5; margin-bottom:6px;">⚡ Tabata protokoli elementi (Tabata et al., 1996)</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11.5px; color:var(--text2);">
+        <div><strong>Tuzilish:</strong> 20 sek ish + 10 sek dam × 8 takror</div>
+        <div><strong>Intensivlik:</strong> 95–100% (Maksimal kuch)</div>
+      </div>
+    </div>
+    {% endif %}
+
   </div>
 </div>
 {% endfor %}
@@ -76,7 +99,7 @@ function gpShowWeek(n, el) {
   // Tanlangan haftani ochish
   document.getElementById('week-' + n).style.display = 'block';
   
-  // Tugmalar uslubini o'zgartirish
+  // Tugmalar uslubini almashtirish
   document.querySelectorAll('.week-tab').forEach(t => {
     t.classList.remove('btn-primary');
     t.classList.add('btn-outline');
