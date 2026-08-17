@@ -1,0 +1,64 @@
+{% extends "_coach_base.html" %}
+{% block title %}Mashg'ulot dasturi — GandbolPro{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="page-title">Mashg'ulot dasturi</div>
+    <div class="page-sub">12 haftalik maxsus chidamlilik dasturi</div>
+  </div>
+  <button class="btn btn-outline" onclick="window.print()">🖨️ Chop etish</button>
+</div>
+
+<div class="week-tabs">
+  {% for w in weeks %}
+  <div class="week-tab {{ 'active' if loop.first }}" data-week="{{ w.n }}" onclick="gpShowWeek({{ w.n }}, this)">{{ w.n }}-hafta</div>
+  {% endfor %}
+</div>
+
+{% for w in weeks %}
+<div class="week-panel" id="week-{{ w.n }}" style="{{ '' if loop.first else 'display:none;' }}">
+  <div class="card">
+    <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:16px;">
+      <div class="stage-badge stage-{{ w.stage }}">{{ w.stage }}</div>
+      <div>
+        <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;">{{ w.n }}-HAFTA</div>
+        <div style="font-size:16px; font-weight:600; margin-bottom:4px;">{{ w.title.split('—')[1] if '—' in w.title else w.title }}</div>
+        <div style="font-size:12px; color:var(--text3); line-height:1.7;">
+          Maqsad: {{ w.goal }}<br>
+          Intensivlik: <strong>{{ w.intensity }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="table-scroll">
+    <table class="result-table">
+      <thead><tr><th>Kun</th><th>Mashq turi</th><th>Hajm</th><th>Intensivlik</th><th>Dam</th></tr></thead>
+      <tbody>
+      {% for day, exercise, volume, intensity, rest in w.days %}
+        <tr>
+          <td>{{ day }}</td>
+          <td>{{ exercise }}</td>
+          <td>{{ volume }}</td>
+          <td>
+            {% if intensity is not none %}
+            <span class="badge {{ 'badge-green' if w.stage=='I' else ('badge-orange' if w.stage=='II' else 'badge-blue') }}">{{ intensity }}%</span>
+            {% else %}—{% endif %}
+          </td>
+          <td>{{ rest }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+function gpShowWeek(n, el) {
+  document.querySelectorAll('.week-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('week-' + n).style.display = 'block';
+  document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+{% endblock %}
