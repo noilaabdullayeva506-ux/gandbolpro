@@ -577,6 +577,19 @@ def coach_delete_result(rid):
     return redirect(url_for("coach_results"))
 
 
+@app.route("/coach/stats")
+@login_required(role="coach")
+def coach_stats():
+    players = Player.query.all()
+    return render_template("coach_stats.html", players=players, phase=get_phase(), active="stats")
+
+
+@app.route("/coach/science")
+@login_required(role="coach")
+def coach_science():
+    return render_template("coach_science.html", phase=get_phase(), active="science")
+
+
 # ------------------------------------------------------------------
 # ATHLETE ROUTES
 # ------------------------------------------------------------------
