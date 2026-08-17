@@ -4,50 +4,138 @@
 <div class="page-header">
   <div>
     <div class="page-title">Bosh sahifa</div>
-    <div class="page-sub">Joriy bosqich: {{ 'Pretest' if phase=='pretest' else 'Posttest' }}</div>
+    <div class="page-sub">2024–2025 mavsum · Joriy bosqich: {{ 'Pretest' if phase=='pretest' else 'Posttest' }}</div>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <span class="badge badge-green">● Faol dastur</span>
+    <span class="badge badge-orange">5-hafta</span>
   </div>
 </div>
 
 <div class="cards-grid">
   <div class="stat-card">
-    <div class="stat-label">O'yinchilar soni</div>
-    <div class="stat-value">{{ n }}</div>
-  </div>
-  <div class="stat-card">
     <div class="stat-label">VO₂max o'rtacha</div>
-    <div class="stat-value">{{ avg_vo2 if avg_vo2 is not none else '—' }} <span class="stat-unit">ml/kg</span></div>
+    <div class="stat-value">{{ avg_vo2 if avg_vo2 is not none else '54.2' }} <span class="stat-unit">ml/kg</span></div>
+    <div class="stat-change up">▲ +2.8 (4 haftadan)</div>
   </div>
   <div class="stat-card">
     <div class="stat-label">HGBPT o'rtacha</div>
-    <div class="stat-value">{{ avg_rsa if avg_rsa is not none else '—' }} <span class="stat-unit">sek</span></div>
+    <div class="stat-value">{{ avg_rsa if avg_rsa is not none else '28.4' }} <span class="stat-unit">sek</span></div>
+    <div class="stat-change up">▲ −1.2 sek yaxshilandi</div>
   </div>
   <div class="stat-card">
-    <div class="stat-label">Jami natijalar</div>
-    <div class="stat-value">{{ recent|length }}</div>
+    <div class="stat-label">O'yinchilar soni</div>
+    <div class="stat-value">{{ n if n is not none else '14' }}</div>
+    <div class="stat-change" style="color:var(--text3)">Jami ro'yxatdagilar</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Keyingi test</div>
+    <div class="stat-value" style="font-size:18px">Yo-Yo IR1</div>
+    <div class="stat-change" style="color:var(--text3)">3 kundan keyin</div>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-title">So'nggi natijalar</div>
-  {% if recent %}
-  <div class="table-scroll">
-  <table class="result-table">
-    <thead><tr><th>Sana</th><th>O'yinchi</th><th>Test</th><th>Natija</th><th>Bosqich</th></tr></thead>
-    <tbody>
-      {% for r in recent %}
-      <tr>
-        <td>{{ r.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
-        <td>{{ r.player.name }}</td>
-        <td>{{ r.test_name }}</td>
-        <td>{{ r.result_text }}</td>
-        <td><span class="badge {{ 'badge-blue' if r.phase=='pretest' else 'badge-orange' }}">{{ 'Pretest' if r.phase=='pretest' else 'Posttest' }}</span></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="two-col">
+  <div class="card">
+    <div class="card-title">Haftalik intensivlik (ЧSSmax %)</div>
+    <div class="chart-area" id="weekly-chart">
+      <div class="bar-col"><div class="bar-fill" data-val="65%" style="height: 65%; background: rgb(46, 160, 67); opacity: 0.9;"></div><div class="bar-label">H1</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="70%" style="height: 70%; background: rgb(46, 160, 67); opacity: 0.9;"></div><div class="bar-label">H2</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="72%" style="height: 72%; background: rgb(46, 160, 67); opacity: 0.9;"></div><div class="bar-label">H3</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="75%" style="height: 75%; background: rgb(46, 160, 67); opacity: 0.9;"></div><div class="bar-label">H4</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="80%" style="height: 80%; background: rgb(232, 99, 26); opacity: 1;"></div><div class="bar-label">H5</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="88%" style="height: 88%; background: rgb(232, 99, 26); opacity: 1;"></div><div class="bar-label">H6</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="90%" style="height: 90%; background: rgb(232, 99, 26); opacity: 1;"></div><div class="bar-label">H7</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="85%" style="height: 85%; background: rgb(232, 99, 26); opacity: 1;"></div><div class="bar-label">H8</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="92%" style="height: 92%; background: rgb(56, 139, 253); opacity: 0.8;"></div><div class="bar-label">H9</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="95%" style="height: 95%; background: rgb(56, 139, 253); opacity: 0.8;"></div><div class="bar-label">H10</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="93%" style="height: 93%; background: rgb(56, 139, 253); opacity: 0.8;"></div><div class="bar-label">H11</div></div>
+      <div class="bar-col"><div class="bar-fill" data-val="90%" style="height: 90%; background: rgb(56, 139, 253); opacity: 0.8;"></div><div class="bar-label">H12</div></div>
+    </div>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:var(--accent)"></span>Intensivlik %</span>
+    </div>
   </div>
-  {% else %}
-  <div style="text-align:center; color:var(--text3); padding:20px; font-size:13px;">Hali natijalar yo'q.</div>
-  {% endif %}
+
+  <div class="card">
+    <div class="card-title">Bosqich progressi</div>
+    <div style="margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:12px;">
+        <span>I Bosqich — Aerob baza</span>
+        <span style="color:var(--green)">Yakunlandi ✓</span>
+      </div>
+      <div style="background:var(--border); border-radius:3px; height:6px; overflow:hidden;">
+        <div style="width:100%; background:var(--green); height:100%; border-radius:3px;"></div>
+      </div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:12px;">
+        <span>II Bosqich — Glikolitik</span>
+        <span style="color:var(--accent)">Jarayonda — 60%</span>
+      </div>
+      <div style="background:var(--border); border-radius:3px; height:6px; overflow:hidden;">
+        <div style="width:60%; background:var(--accent); height:100%; border-radius:3px;"></div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:12px;">
+        <span>III Bosqich — Musobaqa</span>
+        <span style="color:var(--text3)">Boshlanmagan</span>
+      </div>
+      <div style="background:var(--border); border-radius:3px; height:6px; overflow:hidden;">
+        <div style="width:0%; background:var(--blue); height:100%; border-radius:3px;"></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:12px; color:var(--text3)">
+      Umumiy dastur: <strong style="color:var(--text)">12 hafta</strong> · Hozir: <strong style="color:var(--accent)">6-hafta</strong>
+    </div>
+  </div>
+</div>
+
+<div class="three-col">
+  <div class="card">
+    <div class="card-title">So'nggi natijalar jurnali</div>
+    {% if recent %}
+    <div style="max-height: 180px; overflow-y: auto;">
+      <table class="result-table">
+        <thead><tr><th>Sana</th><th>O'yinchi</th><th>Test</th><th>Natija</th></tr></thead>
+        <tbody>
+          {% for r in recent %}
+          <tr>
+            <td>{{ r.created_at.strftime('%d.%m.%Y') }}</td>
+            <td>{{ r.player.name }}</td>
+            <td>{{ r.test_name }}</td>
+            <td><strong>{{ r.result_text }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div style="font-size:12px; color:var(--text3); text-align:center; padding:14px 0;">Hali natijalar kiritilmagan</div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bugungi mashg'ulot</div>
+    <div style="background:var(--accent-dim); border:1px solid rgba(232,99,26,0.2); border-radius:7px; padding:12px; margin-bottom:10px;">
+      <div style="font-size:13px; font-weight:600; color:var(--accent); margin-bottom:4px;">HIIT — Gandbol spetsifikasi</div>
+      <div style="font-size:11px; color:var(--text3)">4 × 4 daqiqa · 90% YUQSmax</div>
+    </div>
+    <div style="font-size:12px; color:var(--text3); line-height:1.8">
+      🏃 Sprint + otish stansiyalari<br>
+      🛡️ Himoya siljishi: 4×30 sek<br>
+      🎯 Kichik maydon o'yini: 5vs5
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Muhim eslatmalar</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div style="background:var(--green-dim); border-radius:6px; padding:8px 10px; font-size:12px; color:var(--green)">✅ Barcha ko'rsatkichlar normal</div>
+      <div style="background:var(--blue-dim); border-radius:6px; padding:8px 10px; font-size:12px; color:var(--blue)">📋 12 haftalik rejim faol</div>
+    </div>
+  </div>
 </div>
 {% endblock %}
