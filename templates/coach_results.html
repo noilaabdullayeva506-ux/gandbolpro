@@ -4,31 +4,53 @@
 <div class="page-header">
   <div>
     <div class="page-title">Test Natijalari Jurnali</div>
-    <div class="page-sub">Barcha o'lchov natijalari</div>
+    <div class="page-sub">Barcha o'lchov natijalari va jadvallar</div>
   </div>
 </div>
+
 <div class="card">
+  <div class="card-title">Saqlangan natijalar ro'yxati</div>
   {% if results %}
   <div class="table-scroll">
-  <table class="result-table">
-    <thead><tr><th>Sana</th><th>O'yinchi</th><th>Test turi</th><th>Natija</th><th>Bosqich</th><th>Izoh</th><th></th></tr></thead>
-    <tbody>
-      {% for r in results %}
-      <tr>
-        <td>{{ r.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
-        <td>{{ r.player.name }}</td>
-        <td><span class="badge badge-blue">{{ r.test_name }}</span></td>
-        <td><strong>{{ r.result_text }}</strong></td>
-        <td><span class="badge {{ 'badge-blue' if r.phase=='pretest' else 'badge-orange' }}">{{ 'Pretest' if r.phase=='pretest' else 'Posttest' }}</span></td>
-        <td>{{ r.note }}</td>
-        <td><a href="{{ url_for('coach_delete_result', rid=r.id) }}" class="btn btn-danger" style="padding:3px 8px; font-size:11px;">✕</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Sana</th>
+          <th>O'yinchi</th>
+          <th>Test turi</th>
+          <th>Natija</th>
+          <th>Bosqich</th>
+          <th>Izoh</th>
+          <th style="text-align: center;">Amal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in results %}
+        <tr>
+          <td>{{ r.created_at.strftime('%d.%m.%Y %H:%M') }}</td>
+          <td><strong>{{ r.player.name }}</strong></td>
+          <td><span class="chip">{{ r.test_name }}</span></td>
+          <td><strong>{{ r.result_text }}</strong></td>
+          <td>
+            <span class="badge {{ 'badge-blue' if r.phase=='pretest' else 'badge-orange' }}">
+              {{ 'Pretest' if r.phase=='pretest' else 'Posttest' }}
+            </span>
+          </td>
+          <td>{{ r.note or '—' }}</td>
+          <td style="text-align: center;">
+            <a href="{{ url_for('coach_delete_result', rid=r.id) }}" onclick="return confirm('Haqiqatan ham ushbu natijani o\'chirmoqchimisiz?')" style="background:rgba(248,81,73,0.12); border:1px solid rgba(248,81,73,0.3); color:#f85149; border-radius:5px; padding:3px 8px; font-size:11px; text-decoration:none; display:inline-block;">✕</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
   {% else %}
-  <div style="text-align:center; padding:24px; color:var(--text3); font-size:13px;">Hali natijalar yo'q. Testlar bo'limidan natija kiriting.</div>
+  <div style="text-align:center; padding:36px 20px; color:var(--text3); font-size:13px;">
+    <div style="font-size:32px; margin-bottom:8px;">📝</div>
+    <div style="font-weight:600; color:var(--text2); margin-bottom:4px;">Hali natijalar yo'q</div>
+    <div>Testlar bo'limidan natija kiriting va saqlang.</div>
+  </div>
   {% endif %}
 </div>
 {% endblock %}
