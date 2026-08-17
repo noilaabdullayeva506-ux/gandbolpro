@@ -9,13 +9,14 @@
   <button class="btn btn-outline" onclick="window.print()">🖨️ Chop etish</button>
 </div>
 
-<!-- Haftalar bo'yicha tablar -->
+<!-- Haftalar bo'yicha tablar (1 dan 12 gacha) -->
 <div class="week-tabs" style="display:flex; gap:6px; margin-bottom:20px; overflow-x:auto; padding-bottom:6px;">
   {% for w in weeks %}
   <button class="week-tab btn {{ 'btn-primary' if loop.first else 'btn-outline' }}" data-week="{{ w.n }}" onclick="gpShowWeek({{ w.n }}, this)" style="white-space:nowrap; font-size:12px; padding:6px 12px;">{{ w.n }}-hafta</button>
   {% endfor %}
 </div>
 
+<!-- Har bir hafta uchun alohida panel -->
 {% for w in weeks %}
 <div class="week-panel" id="week-{{ w.n }}" style="{{ '' if loop.first else 'display:none;' }}">
   <div class="card" style="margin-bottom:14px;">
@@ -70,8 +71,12 @@
 
 <script>
 function gpShowWeek(n, el) {
+  // Barcha haftalar panelini yashirish
   document.querySelectorAll('.week-panel').forEach(p => p.style.display = 'none');
+  // Tanlangan haftani ochish
   document.getElementById('week-' + n).style.display = 'block';
+  
+  // Tugmalar uslubini o'zgartirish
   document.querySelectorAll('.week-tab').forEach(t => {
     t.classList.remove('btn-primary');
     t.classList.add('btn-outline');
