@@ -42,7 +42,7 @@ class Player(db.Model):
 
     user = db.relationship("User", backref="player", uselist=False)
     results = db.relationship("Result", backref="player", cascade="all, delete-orphan",
-                               order_by="desc(Result.created_at)")
+                              order_by="desc(Result.created_at)")
 
 
 class User(db.Model):
@@ -182,47 +182,174 @@ def apply_rpe(fitness, rpe):
 
 
 # ------------------------------------------------------------------
-# 12-HAFTALIK MASHG'ULOT DASTURI (haftama-hafta, statik ma'lumot)
+# 12-HAFTALIK MASHG'ULOT DASTURI (HAR BIRI 100% TURLICHA VA O'ZIGA XOS)
 # ------------------------------------------------------------------
 
 def _week(n, stage, title, goal, intensity, days):
     return {"n": n, "stage": stage, "title": title, "goal": goal, "intensity": intensity, "days": days}
 
-PHASE1_DAYS = [
-    ("Dushanba", "Uzluksiz yugurish (Continuous)", "30 daqiqa", 65, "—"),
-    ("Seshanba", "Texnik + Aerob to'p mashqlari", "45 daqiqa", 70, "—"),
-    ("Chorshanba", "Faol dam", "20 daqiqa", 50, "—"),
-    ("Payshanba", "Fartlek (to'p bilan)", "25 daqiqa", 72, "—"),
-    ("Juma", "Aerob interval: 6×3 daqiqa", "18 daqiqa", 78, "90 sek"),
-    ("Shanba", "O'yin sharoiti + taktika", "60 daqiqa", 70, "—"),
-]
-PHASE2_DAYS = [
-    ("Dushanba", "HGBPT: 6 sikl (20 sek dam)", "6 sikl", 88, "20 sek"),
-    ("Seshanba", "HIIT + Tabata (gandbol spetsifikasi)", "4×4 daq + Tabata", 92, "3 daq"),
-    ("Chorshanba", "Texnik-taktik mashq", "50 daqiqa", 70, "—"),
-    ("Payshanba", "5vs5 press-blok o'yini", "4×5 daqiqa", 92, "2 daqiqa"),
-    ("Juma", "Sirkulyar stansiya + Tabata finisher", "3 seriya", 90, "30 sek"),
-    ("Shanba", "Faol tiklanish + cho'zilish", "30 daqiqa", 45, "—"),
-]
-PHASE3_DAYS = [
-    ("Dushanba", "Match-based interval: 2×15 daqiqa", "30 daqiqa", 95, "5 daqiqa"),
-    ("Seshanba", "Simulyatsiya o'yini (60 daqiqa)", "60 daqiqa", 92, "—"),
-    ("Chorshanba", "Tiklanish + regeneratsiya", "30 daqiqa", 40, "—"),
-    ("Payshanba", "Yuqori intensivlik sprinty", "8×40m", 95, "3 daqiqa"),
-    ("Juma", "Taktik o'yin (to'liq)", "60 daqiqa", 93, "—"),
-    ("Shanba", "Rasmiy musobaqa / dam", "—", None, "—"),
-]
+WEEKS_DATA = {
+    1: {
+        'stage': 'I', 'title': '1-hafta — Aerob poydevor va yugurish bazasi',
+        'goal': 'Umumiy aerob chidamlilik va yurak-qon tomir tizimini ishga tushirish',
+        'intensity': '60–70% YUQSmax',
+        'days': [
+            ('Dushanba', 'Uzluksiz bir maromdagi yugurish', '30 daqiqa', 62, '—'),
+            ('Seshanba', 'Texnik to‘p uzatish va ushlab qolish', '45 daqiqa', 68, '—'),
+            ('Chorshanba', 'Yengil tiknovchi faol dam', '20 daqiqa', 45, '—'),
+            ('Payshanba', 'Fartlek (erkin tezlikdagi yugurish)', '25 daqiqa', 70, '—'),
+            ('Juma', 'Qisqa intervalli yugurish: 6×3 daqiqa', '18 daqiqa', 75, '90 sek'),
+            ('Shanba', 'Asosiy qoidalar va harakatli o‘yin', '60 daqiqa', 65, '—')
+        ]
+    },
+    2: {
+        'stage': 'I', 'title': '2-hafta — Aerob hajmni bosqichma-bosqich oshirish',
+        'goal': 'Ish qobiliyati davomiyligini uzaytirish va tayyorgarlikni kuchaytirish',
+        'intensity': '65–75% YUQSmax',
+        'days': [
+            ('Dushanba', 'O‘zgaruvchan tezlikdagi kross', '35 daqiqa', 68, '—'),
+            ('Seshanba', 'To‘p bilan harakatli texnik kompleks', '50 daqiqa', 72, '—'),
+            ('Chorshanba', 'Nafas olish va cho‘zilish mashqlari', '20 daqiqa', 48, '—'),
+            ('Payshanba', 'To‘p bilan firtlek va yugurish', '30 daqiqa', 74, '—'),
+            ('Juma', 'Aerob interval: 5×4 daqiqa', '20 daqiqa', 78, '90 sek'),
+            ('Shanba', 'Hujum va himoya asoslari (3vs3)', '60 daqiqa', 70, '2 daqiqa')
+        ]
+    },
+    3: {
+        'stage': 'I', 'title': '3-hafta — Aerob-maxsus chidamlilik',
+        'goal': 'Gandbol harakatlariga mos uzun muddatli yuklamalarga o‘tish',
+        'intensity': '70–78% YUQSmax',
+        'days': [
+            ('Dushanba', 'Masofaga chidamli yugurish', '35 daqiqa', 72, '—'),
+            ('Seshanba', 'To‘p bilan tezkor uzatmalar va kombinatsiyalar', '50 daqiqa', 75, '—'),
+            ('Chorshanba', 'Erkin faol tiklanish', '20 daqiqa', 50, '—'),
+            ('Payshanba', 'Yo‘nalishni tez o‘zgartirib yugurish', '30 daqiqa', 76, '—'),
+            ('Juma', 'Intensiv aerob interval: 4×5 daqiqa', '20 daqiqa', 80, '90 sek'),
+            ('Shanba', 'Kichik maydon o‘yini (4vs4)', '60 daqiqa', 75, '2 daqiqa')
+        ]
+    },
+    4: {
+        'stage': 'I', 'title': '4-hafta — Aerob bosqichni yakunlash va test oldi tayyorgarlik',
+        'goal': 'Birinchi bosqich natijalarini mustahkamlash',
+        'intensity': '72–80% YUQSmax',
+        'days': [
+            ('Dushanba', 'Uzluksiz tempdagi uzoq yugurish', '40 daqiqa', 75, '—'),
+            ('Seshanba', 'Texnik-taktik seriyali mashqlar', '50 daqiqa', 78, '—'),
+            ('Chorshanba', 'Yengil tiklanish va massaj elementlari', '20 daqiqa', 50, '—'),
+            ('Payshanba', 'Fartlek va qisqa portlovchi tezlanishlar', '30 daqiqa', 78, '—'),
+            ('Juma', 'Interval qism: 3×6 daqiqa', '18 daqiqa', 82, '2 daqiqa'),
+            ('Shanba', 'Nazorat o‘yini (To‘liq vaqt)', '60 daqiqa', 78, '3 daqiqa')
+        ]
+    },
+    5: {
+        'stage': 'II', 'title': '5-hafta — Glikolitik o‘tish va qisqa HIIT',
+        'goal': 'Anaerob energiyani yoqish va laktatga chidamlilikni boshlash',
+        'intensity': '80–88% YUQSmax',
+        'days': [
+            ('Dushanba', 'Qisqa HIIT protokoli: 4×3 daqiqa', '12 daqiqa', 85, '2.5 daqiqa'),
+            ('Seshanba', '20 metrli takroriy sprint seriyalari', '5×4 takror', 88, '45 sek'),
+            ('Chorshanba', 'Faol tiklanish va harakatchanlik', '25 daqiqa', 52, '—'),
+            ('Payshanba', 'Yonlama siljishlar + darvozaga otish', '5×4 takror', 86, '60 sek'),
+            ('Juma', 'Kichik maydonda shiddatli o‘yin (3vs3)', '4×4 daqiqa', 88, '2 daqiqa'),
+            ('Shanba', 'Taktik kombinatsiyalashgan o‘yin', '60 daqiqa', 82, '—')
+        ]
+    },
+    6: {
+        'stage': 'II', 'title': '6-hafta — Tezkor-kuch va portlovchi chidamlilik',
+        'goal': 'Sakrash va keskin tezlanishlar sifatini yuqori charchoqda ushlash',
+        'intensity': '82–90% YUQSmax',
+        'days': [
+            ('Dushanba', 'Maksimal tezlikdagi sprintlar: 6×25m', '4 seriya', 90, '50 sek'),
+            ('Seshanba', 'To‘siqdan sakrash + tezkor qarshi hujum', '5×5 takror', 88, '60 sek'),
+            ('Chorshanba', 'Regeneratsiya va yengil cho‘zilish', '25 daqiqa', 50, '—'),
+            ('Payshanba', 'Himoyada zich siljish va pressing', '6×40 sek', 89, '70 sek'),
+            ('Juma', 'Dinamik o‘yin seriyasi (4vs4)', '5×4 daqiqa', 90, '2 daqiqa'),
+            ('Shanba', 'Hujum elementlariga asoslangan o‘yin', '60 daqiqa', 85, '—')
+        ]
+    },
+    7: {
+        'stage': 'II', 'title': '7-hafta — Anaerob laktatsid maksimal quvvat',
+        'goal': 'Laktat kislotasiga tolerantlikni (chidashni) oshirish',
+        'intensity': '85–93% YUQSmax',
+        'days': [
+            ('Dushanba', '15 soniyali o‘ta yuqori intensiv intervallar', '4×5 takror', 92, '30 sek'),
+            ('Seshanba', 'Slalom yugurish va to‘p bilan yakunlash', '5×5 takror', 93, '50 sek'),
+            ('Chorshanba', 'Tiknovchi yengil mashg‘ulot', '25 daqiqa', 55, '—'),
+            ('Payshanba', 'Tezkor qarshi hujumga chiqish (Counter-attack)', '6×3 daqiqa', 90, '90 sek'),
+            ('Juma', 'Shiddatli kichik o‘yin (5vs5)', '5×4 daqiqa', 92, '2 daqiqa'),
+            ('Shanba', 'Katta maydon sinov o‘yini', '2×30 daqiqa', 86, '5 daqiqa')
+        ]
+    },
+    8: {
+        'stage': 'II', 'title': '8-hafta — Glikolitik bosqichni yakunlash',
+        'goal': 'Ikkinchi bosqich yuklamalarini barqarorlashtirish va laktatni boshqarish',
+        'intensity': '85–95% YUQSmax',
+        'days': [
+            ('Dushanba', 'To‘liq intensivlikdagi HIIT: 4×4 daqiqa', '16 daqiqa', 93, '3 daqiqa'),
+            ('Seshanba', 'Seriyali tezlanish va darvozaga sakrab otish', '6×4 takror', 94, '45 sek'),
+            ('Chorshanba', 'Faol dam olish', '25 daqiqa', 50, '—'),
+            ('Payshanba', 'Hujum va himoyada shiddatli almashinuv', '6×4 daqiqa', 91, '90 sek'),
+            ('Juma', 'Model o‘yin sharoiti', '5×5 daqiqa', 92, '2 daqiqa'),
+            ('Shanba', 'Musobaqaga yaqin nazorat uchrashuvi', '60 daqiqa', 88, '—')
+        ]
+    },
+    9: {
+        'stage': 'III', 'title': '9-hafta — Musobaqaga xos o‘yin ritmi',
+        'goal': 'O‘yin sharoitidagi maxsus chidamlilik va portlovchi harakatlarni uzviylashtirish',
+        'intensity': '88–95% YUQSmax',
+        'days': [
+            ('Dushanba', 'O‘yin tempidagi 5vs5 kichik maydon', '5×5 daqiqa', 90, '2 daqiqa'),
+            ('Seshanba', 'Tezkor chiqish va aniq nishonga otish', '6×4 takror', 92, '60 sek'),
+            ('Chorshanba', 'Texnik elementlar va tiklanish', '25 daqiqa', 50, '—'),
+            ('Payshanba', 'Himoyadan hujumga o‘tish tezligi', '6×4 daqiqa', 91, '90 sek'),
+            ('Juma', 'O‘yin qismlarini modellashtirish', '4×7 daqiqa', 93, '3 daqiqa'),
+            ('Shanba', 'Rasmiy formatdagi o‘yin', '2×30 daqiqa', 89, '10 daqiqa')
+        ]
+    },
+    10: {
+        'stage': 'III', 'title': '10-hafta — Hujum va himoyada barqarorlik',
+        'goal': 'Og‘ir charchoq paytida ham taktik ongli va aniq harakat qilish',
+        'intensity': '90–96% YUQSmax',
+        'days': [
+            ('Dushanba', 'Taktik qattiq o‘yin (6vs6)', '5×6 daqiqa', 91, '2 daqiqa'),
+            ('Seshanba', 'Zich himoya va tezkor qarshi hujumlar', '6×45 sek', 94, '75 sek'),
+            ('Chorshanba', 'Yengil tiklanish va taktik tahlil', '25 daqiqa', 48, '—'),
+            ('Payshanba', 'Sprint + to‘p uzatish + darvozaga zarba', '5×5 takror', 95, '60 sek'),
+            ('Juma', 'Intensiv hujum-himoya o‘tishlari', '5×5 daqiqa', 93, '2 daqiqa'),
+            ('Shanba', 'Musobaqa darajasidagi sinov o‘yini', '60 daqiqa', 91, '—')
+        ]
+    },
+    11: {
+        'stage': 'III', 'title': '11-hafta — Real musobaqa yuklamasini simulyatsiya qilish',
+        'goal': 'Turnir rejimiga to‘liq moslashish va tiklanish tezligini cho‘qqiga chiqarish',
+        'intensity': '92–98% YUQSmax',
+        'days': [
+            ('Dushanba', 'Maksimal qisqa sprintlar seriyasi', '5×6 takror', 96, '45 sek'),
+            ('Seshanba', 'Yuqori tempdagi to‘liq o‘yin modeli', '5×6 daqiqa', 94, '2 daqiqa'),
+            ('Chorshanba', 'Faol tiklanish va neuromuskulyar bo‘shashish', '25 daqiqa', 50, '—'),
+            ('Payshanba', 'Qarshi hujumlar va qisqa interval', '6×3 daqiqa', 95, '90 sek'),
+            ('Juma', 'O‘yin simulatsiyasi (taymlar kesimida)', '3×15 daqiqa', 93, '5 daqiqa'),
+            ('Shanba', 'To‘liq formatdagi musobaqa oldi o‘yini', '60 daqiqa', 92, '—')
+        ]
+    },
+    12: {
+        'stage': 'III', 'title': '12-hafta — Optimal sport formasini ushlash (Tapering)',
+        'goal': 'Yuklamani kamaytirish, to‘liq tiklanish va musobaqaga 100% tayyor holda kelish',
+        'intensity': '75–90% YUQSmax',
+        'days': [
+            ('Dushanba', 'Qisqartirilgan tezkor HIIT', '3×4 daqiqa', 88, '3 daqiqa'),
+            ('Seshanba', 'Tezkor hujum kombinatsiyalari va otishlar', '5×4 takror', 85, '60 sek'),
+            ('Chorshanba', 'Mutlaq yengil faollik va cho‘zilish', '20 daqiqa', 45, '—'),
+            ('Payshanba', 'Taktik qisqa o‘yin holatlari', '4×4 daqiqa', 85, '2 daqiqa'),
+            ('Juma', 'O‘yin oldidan yengil qizg‘in mashg‘ulot', '2×15 daqiqa', 80, '5 daqiqa'),
+            ('Shanba', '⭐️ MUSOBAQAGA TAYYORLIK (Optimal forma)', '30 daqiqa', 70, '—')
+        ]
+    }
+}
 
 WEEKS = []
-for i in range(1, 5):
-    WEEKS.append(_week(i, "I", f"{i}-hafta — Aerob baza", "VO2max oshirish, yurak-qon tomir bazasi",
-                        "60–75% ЧSSmax", PHASE1_DAYS))
-for i in range(5, 9):
-    WEEKS.append(_week(i, "II", f"{i}-hafta — Glikolitik chidamlilik", "HGBPT chidamliligi, laktik tolerantlik",
-                        "75–90% ЧSSmax", PHASE2_DAYS))
-for i in range(9, 13):
-    WEEKS.append(_week(i, "III", f"{i}-hafta — Musobaqa chidamliligi", "O'yinga xos maxsus chidamlilik",
-                        "85–95% ЧSSmax", PHASE3_DAYS))
+for num, data in WEEKS_DATA.items():
+    WEEKS.append(_week(num, data['stage'], data['title'], data['goal'], data['intensity'], data['days']))
 
 
 # ------------------------------------------------------------------
@@ -272,8 +399,8 @@ def coach_dashboard():
     avg_rsa = round(sum(rsa_vals) / len(rsa_vals), 2) if rsa_vals else None
     recent = Result.query.order_by(Result.created_at.desc()).limit(8).all()
     return render_template("coach_dashboard.html", players=players, n=n,
-                            avg_vo2=avg_vo2, avg_rsa=avg_rsa, recent=recent,
-                            phase=get_phase(), active="dashboard")
+                           avg_vo2=avg_vo2, avg_rsa=avg_rsa, recent=recent,
+                           phase=get_phase(), active="dashboard")
 
 
 @app.route("/coach/program")
