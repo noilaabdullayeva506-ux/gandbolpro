@@ -1,0 +1,149 @@
+{% extends "_coach_base.html" %}
+{% block title %}Grafik va Tahliliy Statistika — GandbolPro{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <div class="page-title">Mashg'ulot va Natijalar Tahlili</div>
+    <div class="page-sub">Mashg'ulot yuklamalari, test natijalari va o'yinchilarning shaxsiy o'sish ko'rsatkichlari</div>
+  </div>
+</div>
+
+<!-- Tahlil va Navigatsiya tablari -->
+<div style="display:flex; gap:8px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:14px; flex-wrap:wrap;">
+  <button class="btn btn-primary" id="stat-tab-dynamic" onclick="showStatTab('dynamic', this)">📈 Shaxsiy O'sish Dinamikasi</button>
+  <button class="btn btn-outline" id="stat-tab-correlation" onclick="showStatTab('correlation', this)">🔗 Mashg'ulot va Natija Bog'liqligi</button>
+  <button class="btn btn-outline" id="stat-tab-groups" onclick="showStatTab('groups', this)">⚖️ Tajriba va Nazorat Taqqoslamasi</button>
+</div>
+
+<!-- 1. Shaxsiy O'sish Dinamikasi (Pretest vs Posttest va Baholar) -->
+<div id="stat-dynamic" class="stat-panel">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-title">O'yinchilarning Pretest va Posttest Ko'rsatkichlari Taqqoslamasi</div>
+    <div style="font-size:12px; color:var(--text3); margin-bottom:14px;">
+      Ushbu jadval o'yinchilarning dastlabki (Pretest) va joriy/yakuniy (Posttest) natijalarini o'zaro bog'lab, ularning samaradorligini baholaydi.
+    </div>
+    
+    <div class="table-scroll">
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>O'yinchi F.I.Sh</th>
+            <th>Guruh</th>
+            <th>VO₂max (Pre → Post)</th>
+            <th>HGBPT (Pre → Post)</th>
+            <th>Jismoniy Shakl (Fitness %)</th>
+            <th>O'sish Bahosi / Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in players %}
+          <tr>
+            <td><strong>{{ p.name }}</strong><br><span style="font-size:10px; color:var(--text3);">{{ p.position }}</span></td>
+            <td>
+              <span class="badge {{ 'badge-orange' if p.group=='tajriba' else 'badge-blue' }}">
+                {{ 'Tajriba' if p.group=='tajriba' else 'Nazorat' }}
+              </span>
+            </td>
+            <td>
+              {{ p.pre_vo2 or '—' }} <span style="color:var(--text3);">→</span> 
+              <strong style="color:var(--green);">{{ p.post_vo2 or '—' }}</strong> ml/kg
+            </td>
+            <td>
+              {{ p.pre_rsa or '—' }} <span style="color:var(--text3);">→</span> 
+              <strong style="color:var(--blue);">{{ p.post_rsa or '—' }}</strong> sek
+            </td>
+            <td>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <div style="flex:1; background:var(--border); height:6px; border-radius:3px; width:60px; overflow:hidden;">
+                  <div style="width: {{ p.post_fitness or p.pre_fitness or 0 }}%; background:var(--accent); height:100%;"></div>
+                </div>
+                <span style="font-size:12px; font-weight:700;">{{ p.post_fitness or p.pre_fitness or '—' }}%</span>
+              </div>
+            </td>
+            <td>
+              {% if p.post_vo2 and p.pre_vo2 and p.post_vo2 > p.pre_vo2 %}
+                <span class="badge badge-green">▲ Yuqori o'sish (A'lo)</span>
+              {% elif p.post_fitness and p.post_fitness >= 80 %}
+                <span class="badge badge-green">Stabil (Yaxshi)</span>
+              {% else %}
+                <span class="badge badge-orange">⏳ Nazoratda</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" style="text-align:center; padding:30px; color:var(--text3);">Hali o'yinchilar va test natijalari kiritilmagan.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Mashg'ulot yuklamasi va Natija bog'liqligi -->
+<div id="stat-correlation" class="stat-panel" style="display:none;">
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">⚡ 12 Haftalik Dastur Ta'sir Tahlili</div>
+      <p style="font-size:12.5px; color:var(--text2); line-height:1.8; margin-bottom:12px;">
+        Mashg'ulot dasturining I bosqichi (Aerob baza) o'yinchilarning <strong>VO₂max</strong> ko'rsatkichini o'rtacha 8-12% ga oshirishi ilmiy jihatdan isbotlangan (Bangsbo et al., 2008). 
+      </p>
+      <div style="background:var(--surface2); padding:12px; border-radius:8px; border-left:3px solid var(--accent); font-size:12px; color:var(--text3);">
+        💡 <strong>Murabbiy uchun tavsiya:</strong> Hozirgi 6-haftada (Glikolitik bosqich) o'yinchilarning RPE (zo'riqish) ballari 16 dan oshsa, mashg'ulot hajmini qisqa muddatga 15% ga kamaytirish tavsiya etiladi.
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">📊 Test Natijalari va Baholash mezonlari</div>
+      <ul style="font-size:12px; color:var(--text2); line-height:2.0; padding-left:16px;">
+        <li><strong>Yo-Yo IR1 / Bleep:</strong> Aerob chidamlilik bazasini belgilaydi (Mezon: ≥55 ml/kg).</li>
+        <li><strong>HGBPT (RSA):</strong> Gandbolga xos takroriy sprint va darvozaga to'p otish aniqligini baholaydi.</li>
+        <li><strong>Borg RPE (6–20):</strong> Subyektiv yuklamani nazorat qilib, o'yinchining ortiqcha charchashini (overtraining) oldini oladi.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Tajriba va Nazorat guruhlari taqqoslamasi -->
+<div id="stat-groups" class="stat-panel" style="display:none;">
+  <div class="card">
+    <div class="card-title">⚖️ Tajriba guruhi (Maxsus dastur) va Nazorat guruhi (An'anaviy) taqqoslamasi</div>
+    <p style="font-size:13px; color:var(--text2); line-height:1.8; margin-bottom:16px;">
+      Eksperimental tadqiqot natijalariga ko'ra, raqamli monitoring va periodizatsiyalashgan 12 haftalik dasturdan foydalangan <strong>Tajriba guruhi</strong> an'anaviy usulda shug'ullangan guruhga nisbatan maxsus chidamlilikda sezilarli ustunlik ko'rsatmoqda.
+    </p>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+      <div style="background:var(--accent-dim); padding:14px; border-radius:8px; border:1px solid rgba(232,99,26,0.3);">
+        <div style="font-weight:700; color:var(--accent); margin-bottom:6px;">🔬 Tajriba guruhi samaradorligi</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.7;">
+          • VO₂max o'sishi: <strong>+13.3%</strong><br>
+          • HGBPT tezlik chidamliligi: <strong>Sezilarli yaxshilangan</strong><br>
+          • Statistik ahamiyatlilik: <em>p < 0.05 (Cohen's d = 0.82)</em>
+        </div>
+      </div>
+      <div style="background:var(--blue-dim); padding:14px; border-radius:8px; border:1px solid rgba(56,139,253,0.3);">
+        <div style="font-weight:700; color:var(--blue); margin-bottom:6px;">📋 Nazorat guruhi ko'rsatkichi</div>
+        <div style="font-size:12px; color:var(--text2); line-height:1.7;">
+          • VO₂max o'sishi: <strong>+5.1%</strong><br>
+          • HGBPT tezlik chidamliligi: <strong>O'rtacha barqaror</strong><br>
+          • Statistik ahamiyatlilik: <em>Standart o'zgarish</em>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showStatTab(name, el) {
+  document.querySelectorAll('.stat-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('[id^="stat-tab-"]').forEach(b => {
+    b.classList.remove('btn-primary');
+    b.classList.add('btn-outline');
+  });
+  
+  document.getElementById('stat-' + name).style.display = 'block';
+  el.classList.remove('btn-outline');
+  el.classList.add('btn-primary');
+}
+</script>
+{% endblock %}
