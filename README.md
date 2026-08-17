@@ -1,72 +1,42 @@
-# GandbolPro — to'liq backend versiyasi
 
-Bu versiya avvalgi (faqat HTML/JavaScript, bitta havolaga bog'liq) versiyadan farqli o'laroq
-**haqiqiy Flask backend + SQLite baza** bilan ishlaydi. Endi:
+# GandbolPro — To'liq Backend Versiyasi (Flask + SQLite)
 
-- Murabbiy va sportchi uchun **alohida login/parol** bilan haqiqiy kirish tizimi (HEMIS kabi).
-- Murabbiy o'yinchi qo'shganda tizim **avtomatik login/parol** yaratadi (yoki o'zingiz belgilaysiz).
-- Sportchi o'z login/parolini kiritib, **faqat o'zining** natijalarini ko'radi.
-- Parollar **hash qilingan** holda saqlanadi (xavfsiz).
-- **12 haftalik** mashg'ulot dasturi hafta-hafta bo'yicha ko'rsatiladi.
-- Kompyuterdan ham, telefondan ham ochiladi (responsive dizayn).
-- Ma'lumotlar bitta umumiy SQLite bazada saqlanadi — barcha foydalanuvchilar bir xil ma'lumotni ko'radi.
+Ushbu loyiha avvalgi statik (faqat HTML/JavaScript) versiyadan farqli o'laroq, **haqiqiy Flask backend va SQLite ma'lumotlar bazasi** asosida ishlaydi. 
 
-## Muhim: GitHub Pages BU YERDA ISHLAMAYDI
+## 🚀 Yangi Imkoniyatlar va Afzalliklar
 
-Oldingi loyihangiz GitHub Pages'da turgan edi — bu faqat statik HTML fayllarni ko'rsatadi,
-Python/Flask kodini ishga tushira olmaydi. Shuning uchun bu versiyani **haqiqiy serverga**
-joylashtirish kerak. Quyida eng oson (bepul) yo'llar:
+- **Xavfsiz Autentifikatsiya:** Murabbiy va sportchilar uchun HEMIS tizimiga o'xshash alohida login va parollar orqali kirish imkoniyati.
+- **Avtomatlashtirilgan Hisoblar:** Murabbiy yangi o'yinchi qo'shganda, tizim ularga avtomatik tarzda login va 4 xonali parol yaratadi.
+- **Shaxsiy Kabinet:** Sportchilar o'zlarining login va parollari bilan kirib, **faqat o'zlarining** shaxsiy natijalari va ko'rsatkichlarini ko'radilar.
+- **Xavfsizlik:** Barcha parollar bazada maxsus xesh (hashed) ko'rinishida himoyalangan holda saqlanadi.
+- **12 Haftalik Dastur:** Ilmiy asoslangan 3 bosqichli periodizatsiyaga asoslangan 12 haftalik mashg'ulot dasturi hafta-hafta bo'yicha batafsil taqdim etiladi.
+- **Responsive Dizayn:** Ilova kompyuterlar, planshetlar va mobil telefonlarda birdek mukammal ishlaydi.
+- **Umumiy Ma'lumotlar Bazasi:** Barcha ma'lumotlar bitta markaziy SQLite bazasida saqlangani uchun barcha foydalanuvchilar bir xil dolzarb ma'lumotlarni ko'rishadi.
 
-### 1-variant: Render.com (tavsiya etiladi, bepul)
-1. https://render.com da ro'yxatdan o'ting (GitHub akkountingiz bilan kirsangiz bo'ladi).
-2. Bu papkani (yoki uni GitHub repo qilib yuklaganingizni) Render'da "New Web Service" orqali ulang.
-3. Build command: `pip install -r requirements.txt`
-4. Start command: `gunicorn app:app`
-5. Deploy tugmasini bosing — bir necha daqiqada `https://sizning-nomingiz.onrender.com` manzili tayyor bo'ladi.
-6. Shu havolani istalgan kishi (kompyuter yoki telefondan) ochib, kirish mumkin.
+---
 
-### 2-variant: PythonAnywhere (bepul, oddiy)
-1. https://www.pythonanywhere.com da ro'yxatdan o'ting.
-2. Fayllarni yuklang (Files bo'limidan yoki git clone orqali).
-3. "Web" bo'limidan yangi Flask ilova yarating, WSGI faylida `app.py`ni ko'rsating.
-4. Reload tugmasini bosing.
+## ⚠️ Muhim Eslatma: GitHub Pages bu yerda ishlamaydi
 
-### 3-variant: O'zingizning kompyuteringizda sinab ko'rish
+Avvalgi versiyangiz GitHub Pages'da joylashgan edi. GitHub Pages faqat statik HTML/JS fayllarni ochadi va Python/Flask kodlarini o'qiy olmaydi. Shu sababli, ushbu versiyani ishga tushirish uchun uni **haqiqiy serverga** joylashtirish lozim. 
+
+Quyida ilovani bepul va oson joylashtirish yo'llari ko'rsatilgan:
+
+### 1-variant: Render.com (Tavsiya etiladi — Bepul)
+1. [Render.com](https://render.com) saytida o'z GitHub akkountingiz orqali ro'yxatdan o'ting.
+2. Ushbu loyiha papkasini GitHub repository sifatida yuklang va Render'da **"New Web Service"** tugmasini bosing.
+3. Kerakli sozlamalarni kiriting:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app`
+4. **Deploy** tugmasini bosing. Bir necha daqiqada `https://sizning-nomingiz.onrender.com` havolasi tayyor bo'ladi va undan istalgan qurilmada foydalanishingiz mumkin.
+
+### 2-variant: PythonAnywhere (Bepul va sodda)
+1. [PythonAnywhere](https://www.pythonanywhere.com) saytida ro'yxatdan o'ting.
+2. Fayllarni **Files** bo'limi orqali yuklang.
+3. **Web** bo'limidan yangi Flask ilovasini tanlab, WSGI faylida `app.py` ni ko'rsating.
+4. **Reload** tugmasini bosing.
+
+### 3-variant: Mahalliy kompyuterda sinab ko'rish (Localhost)
+Terminal yoki buyruq satrida quyidagi buyruqlarni bajaring:
 ```bash
 pip install -r requirements.txt
 python app.py
-```
-Keyin brauzerda `http://localhost:5000` ni oching.
-
-## Birinchi kirish
-
-- **Murabbiy:** login `coach`, parol `coach123` — birinchi kirgandan so'ng buni xohlasangiz
-  bazadan o'zgartirish mumkin (hozircha kod orqali; xohlasangiz shu funksiyani ham qo'shib beraman).
-- **Sportchi:** murabbiy "O'yinchilar" bo'limidan yangi o'yinchi qo'shganda, tizim avtomatik
-  login (masalan `aliyev`) va 4 xonali parol yaratadi — shuni sportchiga ayting. Sportchi shu
-  login/parol bilan bosh sahifadan kirsa, **faqat o'zining** profiliga tushadi.
-
-## Papka tuzilishi
-```
-gandbolpro/
-├── app.py                  # Flask backend — barcha yo'nalishlar, hisob-kitob formulalari
-├── requirements.txt        # Python kutubxonalari
-├── static/style.css        # Dizayn (dark theme, mobil-moslashuvchan)
-└── templates/
-    ├── login.html
-    ├── _coach_base.html    # Murabbiy sahifalari uchun umumiy shablon (sidebar)
-    ├── coach_dashboard.html
-    ├── coach_program.html  # 12 haftalik dastur (hafta tablari bilan)
-    ├── coach_players.html
-    ├── coach_tests.html
-    ├── coach_results.html
-    └── athlete_dashboard.html   # Sportchining mobil-uslub shaxsiy kabineti
-```
-
-## Keyingi qadamlar (agar xohlasangiz)
-- Murabbiy o'z parolini o'zgartirishi uchun sahifa
-- Statistika/grafik sahifasi (t-test, Cohen's d) — avvalgi HTML versiyada bor edi, backend'ga
-  ko'chirish mumkin
-- Excel eksport (natijalarni .xlsx qilib yuklab olish)
-
-Shularning birortasi kerak bo'lsa, ayting — qo'shib beraman.
