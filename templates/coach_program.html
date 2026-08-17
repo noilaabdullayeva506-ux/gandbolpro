@@ -4,50 +4,65 @@
 <div class="page-header">
   <div>
     <div class="page-title">Mashg'ulot dasturi</div>
-    <div class="page-sub">12 haftalik maxsus chidamlilik dasturi</div>
+    <div class="page-sub">12 haftalik maxsus chidamlilik dasturi · 3 bosqichli periodizatsiya</div>
   </div>
   <button class="btn btn-outline" onclick="window.print()">🖨️ Chop etish</button>
 </div>
 
-<div class="week-tabs">
+<!-- Haftalar bo'yicha tablar -->
+<div class="week-tabs" style="display:flex; gap:6px; margin-bottom:20px; overflow-x:auto; padding-bottom:6px;">
   {% for w in weeks %}
-  <div class="week-tab {{ 'active' if loop.first }}" data-week="{{ w.n }}" onclick="gpShowWeek({{ w.n }}, this)">{{ w.n }}-hafta</div>
+  <button class="week-tab btn {{ 'btn-primary' if loop.first else 'btn-outline' }}" data-week="{{ w.n }}" onclick="gpShowWeek({{ w.n }}, this)" style="white-space:nowrap; font-size:12px; padding:6px 12px;">{{ w.n }}-hafta</button>
   {% endfor %}
 </div>
 
 {% for w in weeks %}
 <div class="week-panel" id="week-{{ w.n }}" style="{{ '' if loop.first else 'display:none;' }}">
-  <div class="card">
-    <div style="display:flex; gap:14px; align-items:flex-start; margin-bottom:16px;">
-      <div class="stage-badge stage-{{ w.stage }}">{{ w.stage }}</div>
+  <div class="card" style="margin-bottom:14px;">
+    <div style="display:flex; gap:12px; align-items:flex-start; margin-bottom:16px;">
+      <div style="background:{{ 'var(--green-dim)' if w.stage=='I' else ('var(--accent-dim)' if w.stage=='II' else 'var(--blue-dim)') }}; border-radius:8px; padding:10px 14px; text-align:center; min-width:80px;">
+        <div style="font-size:22px; font-weight:700; color:{{ 'var(--green)' if w.stage=='I' else ('var(--accent)' if w.stage=='II' else 'var(--blue)') }}; font-family:'Space Grotesk',sans-serif;">{{ w.stage }}</div>
+        <div style="font-size:10px; color:var(--text3);">BOSQICH</div>
+      </div>
       <div>
         <div style="font-size:11px; color:var(--text3); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;">{{ w.n }}-HAFTA</div>
-        <div style="font-size:16px; font-weight:600; margin-bottom:4px;">{{ w.title.split('—')[1] if '—' in w.title else w.title }}</div>
+        <div style="font-size:16px; font-weight:600; margin-bottom:4px; color:var(--text);">{{ w.title }}</div>
         <div style="font-size:12px; color:var(--text3); line-height:1.7;">
           Maqsad: {{ w.goal }}<br>
           Intensivlik: <strong>{{ w.intensity }}</strong>
         </div>
       </div>
     </div>
+
     <div class="table-scroll">
-    <table class="result-table">
-      <thead><tr><th>Kun</th><th>Mashq turi</th><th>Hajm</th><th>Intensivlik</th><th>Dam</th></tr></thead>
-      <tbody>
-      {% for day, exercise, volume, intensity, rest in w.days %}
-        <tr>
-          <td>{{ day }}</td>
-          <td>{{ exercise }}</td>
-          <td>{{ volume }}</td>
-          <td>
-            {% if intensity is not none %}
-            <span class="badge {{ 'badge-green' if w.stage=='I' else ('badge-orange' if w.stage=='II' else 'badge-blue') }}">{{ intensity }}%</span>
-            {% else %}—{% endif %}
-          </td>
-          <td>{{ rest }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+      <table class="result-table">
+        <thead>
+          <tr>
+            <th>Kun</th>
+            <th>Mashq turi</th>
+            <th>Hajm</th>
+            <th>Intensivlik</th>
+            <th>Dam</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for day, exercise, volume, intensity, rest in w.days %}
+          <tr>
+            <td><strong>{{ day }}</strong></td>
+            <td>{{ exercise }}</td>
+            <td>{{ volume }}</td>
+            <td>
+              {% if intensity is not none %}
+              <div class="intensity-bar" style="display:flex; align-items:center; gap:6px;">
+                <span class="badge {{ 'badge-green' if w.stage=='I' else ('badge-orange' if w.stage=='II' else 'badge-blue') }}">{{ intensity }}%</span>
+              </div>
+              {% else %}—{% endif %}
+            </td>
+            <td>{{ rest }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -57,8 +72,12 @@
 function gpShowWeek(n, el) {
   document.querySelectorAll('.week-panel').forEach(p => p.style.display = 'none');
   document.getElementById('week-' + n).style.display = 'block';
-  document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll('.week-tab').forEach(t => {
+    t.classList.remove('btn-primary');
+    t.classList.add('btn-outline');
+  });
+  el.classList.remove('btn-outline');
+  el.classList.add('btn-primary');
 }
 </script>
 {% endblock %}
